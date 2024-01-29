@@ -1,7 +1,10 @@
-import 'dotenv/config'
-import "process"
-import { RSSParser } from './rssParser.js'
-import { RSSTorrentDownloader } from './rssTorrentDl.js'
+// import 'dotenv/config'
+// import "process"
+// import { RSSParser } from './rssParser.js'
+// import { RSSTorrentDownloader } from './rssTorrentDl.js'
+require('dotenv').config();
+const {RSSParser} = require("./rssParser");
+const {RSSTorrentDownloader} = require("./rssTorrentDl");
 
 async function main() {
     let rssTorrentDownloader;
@@ -17,4 +20,4 @@ async function main() {
         console.error(e)
     }
 }
-await main();
+main();

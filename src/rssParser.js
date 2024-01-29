@@ -1,8 +1,11 @@
-import 'dotenv/config';
-import Parser from 'rss-parser';
+// import 'dotenv/config';
+// import Parser from 'rss-parser';
+// const cliProgress = require('cli-progress');
+// const WebTorrent = require('webtorrent')
+let Parser = require('rss-parser');
+require('dotenv').config();
 
-
-export class RSSParser {
+class RSSParser {
     constructor() {
         this.parser = new Parser();
         this.magnetLinks=[];
@@ -24,7 +27,7 @@ export class RSSParser {
                     };
                     } else {
                         if (item[this.rssFilterObj[url]["filterKey"]].includes(this.rssFilterObj[url]["filterValues"])) {
-                            console.log("added", item.title);
+                            console.log("found", item.title);
                             this.magnetLinks.push(item.link);
                         };
                     };
@@ -38,3 +41,5 @@ export class RSSParser {
 
     };
 }
+
+module.exports = {RSSParser}

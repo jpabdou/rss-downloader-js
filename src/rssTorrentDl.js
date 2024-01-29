@@ -1,9 +1,11 @@
-import 'dotenv/config';
-import WebTorrent from 'webtorrent'
-import "process"
-import cliProgress from "cli-progress"
+// import 'dotenv/config';
+// import WebTorrent from 'webtorrent'
+// import "process"
+require('dotenv').config();
+const cliProgress = require('cli-progress');
+const WebTorrent = require('webtorrent')
 
-export class RSSTorrentDownloader {
+class RSSTorrentDownloader {
     constructor(links){
         // Set DOWNLOAD_LIMIT environmental variable to desired speed in MB/s
         const client = new WebTorrent({downloadLimit: Number(process.env.DOWNLOAD_LIMIT) / 10**6 || -1});
@@ -59,3 +61,4 @@ export class RSSTorrentDownloader {
     };
 
 }
+module.exports = {RSSTorrentDownloader}
