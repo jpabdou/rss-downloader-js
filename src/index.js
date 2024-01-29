@@ -14,8 +14,7 @@ async function main() {
         const rssParser = new RSSParser();
         await rssParser.findDownloadLinks();
         console.log(rssParser.magnetLinks)
-        // process.exit()
-        rssTorrentDownloader = new RSSTorrentDownloader([rssParser.magnetLinks[0]]);
+        rssTorrentDownloader = new RSSTorrentDownloader(rssParser.magnetLinks);
         await rssTorrentDownloader.torrentDownload();
 
     } catch (e) {
