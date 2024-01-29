@@ -1,14 +1,13 @@
-// import 'dotenv/config';
-// import WebTorrent from 'webtorrent'
-// import "process"
-require('dotenv').config();
-const cliProgress = require('cli-progress');
-const WebTorrent = require('webtorrent')
+import 'dotenv/config';
+import WebTorrent from 'webtorrent'
+import "process"
+import cliProgress from "cli-progress";    
 
-class RSSTorrentDownloader {
+
+export class RSSTorrentDownloader {
     constructor(links){
-        // Set DOWNLOAD_LIMIT environmental variable to desired speed in MB/s
-        const client = new WebTorrent({downloadLimit: Number(process.env.DOWNLOAD_LIMIT) / 10**6 || -1});
+        // Set THROTTLE_SPEED environment variable to desired speed in MB/s
+        const client = new WebTorrent({downloadLimit: Number(process.env.THROTTLE_SPEED) * 10**6 || -1});
         const multibar = new cliProgress.MultiBar({
             clearOnComplete: false,
             hideCursor: true,
@@ -61,4 +60,3 @@ class RSSTorrentDownloader {
     };
 
 }
-module.exports = {RSSTorrentDownloader}

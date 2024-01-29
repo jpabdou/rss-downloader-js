@@ -1,23 +1,25 @@
-// import 'dotenv/config'
-// import "process"
-// import { RSSParser } from './rssParser.js'
-// import { RSSTorrentDownloader } from './rssTorrentDl.js'
-require('dotenv').config();
-const {RSSParser} = require("./rssParser");
-const {RSSTorrentDownloader} = require("./rssTorrentDl");
+import dotenv from 'dotenv'
+dotenv.config()
+import "process"
+import { RSSParser } from './rssParser.js'
+import { RSSTorrentDownloader } from './rssTorrentDl.js'
+
 
 async function main() {
     let rssTorrentDownloader;
     try {
-        process.chdir(process.env.DOWNLOAD_DIRECTORY)
+        const destDir = process.env.DOWNLOAD_DIRECTORY || "./";
+        process.chdir(destDir);
         console.log("Current directory:", process.cwd());
-        const rssParser = new RSSParser()
-        await rssParser.findDownloadLinks()
-        rssTorrentDownloader = new RSSTorrentDownloader(rssParser.magnetLinks);
+        const rssParser = new RSSParser();
+        await rssParser.findDownloadLinks();
+        console.log(rssParser.magnetLinks)
+        // process.exit()
+        rssTorrentDownloader = new RSSTorrentDownloader([rssParser.magnetLinks[0]]);
         await rssTorrentDownloader.torrentDownload();
 
     } catch (e) {
         console.error(e)
     }
-}
+};
 main();
