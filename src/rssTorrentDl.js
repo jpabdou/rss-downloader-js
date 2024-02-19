@@ -40,14 +40,18 @@ export class RSSTorrentDownloader {
                     torrent.on('done', () => {
                         this.displayProgress(torrent, bar)
                         const seeding = process.env.SEEDING || "0"
-                        if (this.client.progress == 0 && seeding === "0" ){
-                            console.log('Torrent downloads are finished. Environment variable SEEDING set to "0" or not set at all. Closing client...')
-                            this.client.destroy();
-                            console.log("Operations complete");
-                            process.exit();
-                        } else {
-                            console.log('Torrent downloads are finished. Environment variable SEEDING not set to "0". Seeding torrents. Enter break command to exit program')
-                        }
+                        if (this.client.progress === 0 ){
+                            if (seeding === "0") {
+                                console.log('Torrent downloads are finished. Environment variable SEEDING set to "0" or not set at all. Closing client...')
+                                this.client.destroy();
+                                console.log("Operations complete");
+                                process.exit();
+                            }
+                            else {
+                                console.log('Torrent downloads are finished. Environment variable SEEDING not set to "0". Seeding torrents. Enter break command to exit program')
+                            }
+
+                        } 
                       })
                       setInterval(this.displayProgress, 1000, torrent, bar);
                   })
