@@ -9,13 +9,14 @@ export class RSSTorrentDownloader {
         // Set THROTTLE_SPEED environment variable to desired speed in MB/s
         const client = new WebTorrent({downloadLimit: Number(process.env.THROTTLE_SPEED) * 10**6 || -1});
         const multibar = new cliProgress.MultiBar({
-            clearOnComplete: false,
+            stopOnComplete: true,
             hideCursor: true,
             format: ` {filename} Progress | {bar} | {percentage}% || {value}/{total} Chunks  || DL Speed: {dlSpeed} MB/s  || UL Speed: {ulSpeed} MB/s`,
         }, cliProgress.Presets.shades_grey);
         this.magnetLinks = links;
         this.client = client; 
         this.multibar = multibar;
+        this.updateIntervalMilliseconds = 2000
            
     };
 
@@ -32,13 +33,14 @@ export class RSSTorrentDownloader {
 
                     console.log('Client is downloading:', torrent.name)
                     const bar = this.multibar.create(100,0, {filename: torrent.name, dlSpeed: torrent.downloadSpeed/10**6, ulSpeed: torrent.uploadSpeed/10**6 })
- 
 
-        
+                    torrent.on('download', () => {
+                        setInterval(this.displayProgress, this.updateIntervalMilliseconds, torrent, bar);
+
+                      })
              
                   
                     torrent.on('done', () => {
-                        this.displayProgress(torrent, bar)
                         const seeding = process.env.SEEDING || "0"
                         if (this.client.progress === 0 ){
                             if (seeding === "0") {
@@ -53,7 +55,6 @@ export class RSSTorrentDownloader {
 
                         } 
                       })
-                      setInterval(this.displayProgress, 1000, torrent, bar);
                   })
             }
     

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import "process"
-import { RSSParser } from './rssParser.js'
+import { RSSParser } from './rssparser.js'
 import { RSSTorrentDownloader } from './rssTorrentDl.js'
 
 
